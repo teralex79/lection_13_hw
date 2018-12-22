@@ -1,27 +1,28 @@
 FROM alpine:3.8
 
-RUN apk add --update --no-cache maven
+RUN apk update && apk upgrade &&\
+    apk add --no-cache maven
 
-RUN apk add --update --no-cache terraform
+RUN apk add --no-cache terraform
 
-RUN apk add --update --no-cache bash \
-                                python2-dev \
-                                py-pip && \
-    apk add --update --no-cache --virtual=build gcc \
-                                                libffi-dev \
-                                                make \
-                                                musl-dev \
-                                                openssl-dev && \
+RUN apk add --no-cache bash \
+                       python2-dev \
+                       py-pip && \
+    apk add --no-cache --virtual=build gcc \
+                                       libffi-dev \
+                                       make \
+                                       musl-dev \
+                                       openssl-dev && \
     pip install --upgrade pip && \
     pip install --upgrade azure-cli && \
     pip install --upgrade databricks-cli && \
     apk del --purge build && \
-    apk add --update --no-cache jq \
-                                openssl
+    apk add --no-cache jq \
+                       openssl
 
-RUN apk add --update --no-cache nodejs \
+RUN apk add --no-cache nodejs \
                                 nodejs-npm && \
     npm install -g @angular/cli && \
     apk del --purge nodejs-npm && \
-    apk add --update --no-cache python3
+    apk add --no-cache python3
 
