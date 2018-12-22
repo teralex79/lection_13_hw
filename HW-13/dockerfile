@@ -4,7 +4,8 @@ RUN apk add --no-cache maven
 
 ENV MSRESTAZURE_VERSION 0.4.11
 
-RUN apk add --no-cache bash \
+RUN apk update &&\
+    apk add --no-cache bash \
                        python2-dev \
                        py2-pip && \
     apk add --no-cache --virtual=build gcc \
@@ -20,7 +21,8 @@ RUN apk add --no-cache bash \
     apk add --no-cache jq \
                        openssl
 
-RUN apk add --no-cache nodejs \
+RUN apk update &&\
+    apk add --no-cache nodejs \
                        nodejs-npm && \
     npm install -g @angular/cli && \
     apk del --purge --no-cache nodejs-npm && \
@@ -36,4 +38,3 @@ ${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
     chmod +x usr/bin/terraform && \
     rm -f terraform.zip && \
     apk del --purge --no-cache temp 
-
