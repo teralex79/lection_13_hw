@@ -2,7 +2,7 @@ FROM alpine:3.8
 
 RUN apk add --no-cache maven
 
-ENV MSRESTAZURE_VERSION=0.4.11
+ENV MSRESTAZURE_VERSION 0.4.11
 
 RUN apk add --no-cache bash \
                        python2-dev \
@@ -26,7 +26,7 @@ RUN apk add --no-cache nodejs \
     apk del --purge --no-cache nodejs-npm && \
     apk add --no-cache python3
 
-ENV TERRAFORM_VERSION=0.11.11
+ENV TERRAFORM_VERSION 0.11.11
 
 RUN apk add --no-cache --virtual=temp curl unzip && \
     curl -L https://releases.hashicorp.com/terraform/\
