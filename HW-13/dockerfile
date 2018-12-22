@@ -1,12 +1,10 @@
 FROM alpine:3.8
 
-RUN apk update &&\
-    apk add --no-cache maven
+RUN apk add --no-cache maven
 
 ENV MSRESTAZURE_VERSION=0.4.11
 
-RUN apk update &&\
-    apk add --no-cache bash \
+RUN apk add --no-cache bash \
                        python2-dev \
                        py2-pip && \
     apk add --no-cache --virtual=build gcc \
@@ -18,24 +16,22 @@ RUN apk update &&\
     pip install msrestazure~=${MSRESTAZURE_VERSION} && \
     pip install --upgrade azure-cli && \
     pip install --upgrade databricks-cli && \
-    apk del --purge build && \
+    apk del --purge --no-cache build && \
     apk add --no-cache jq \
                        openssl
 
-RUN apk update &&\
-    apk add --no-cache nodejs \
+RUN apk add --no-cache nodejs \
                        nodejs-npm && \
     npm install -g @angular/cli && \
-    apk del --purge nodejs-npm && \
+    apk del --purge --no-cache nodejs-npm && \
     apk add --no-cache python3
 
 ENV TERRAFORM_VERSION=0.11.11
 
-RUN apk update &&\
-    apk add --no-cache --virtual=temp curl unzip && \
+RUN apk add --no-cache --virtual=temp curl unzip && \
     curl -L https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -o terraform.zip && \
     unzip terraform.zip -d /usr/bin && \
     chmod +x usr/bin/terraform && \
     rm -f terraform.zip && \
-    apk del --purge temp 
+    apk del --purge --no-cache temp 
 
