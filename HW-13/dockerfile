@@ -1,0 +1,48 @@
+FROM alpine:3.8
+
+# Install MAVEN
+# Run `docker build --no-cache .` to update dependencies. From "Best practices for writing Dockerfiles".
+RUN apk add --no-cache maven
+
+# Azure-cli had problems with installed version of msrestazure. Specify a compatable version.
+ENV MSRESTAZURE_VERSION 0.4.11
+
+# Install azure-cli, databricks-cli, jq, openssl and tools required for them. 
+# Remove some of tools, which not needed after installation. 
+RUN apk add --no-cache bash \
+                       python2-dev \
+                       py2-pip && \
+    apk add --no-cache --virtual=build gcc \
+                                       libffi-dev \
+                                       make \
+                                       musl-dev \
+                                       openssl-dev && \
+    pip install --upgrade pip && \
+    pip install msrestazure~=${MSRESTAZURE_VERSION} && \
+    pip install --upgrade azure-cli && \
+    pip install --upgrade databricks-cli && \
+    apk del --purge --no-cache build && \
+    apk add --no-cache jq \
+                       openssl
+
+# Install angular-cli, python3 and tools required for them.
+# Remove some of tools, which not needed after installation.
+RUN apk add --no-cache nodejs \
+                       nodejs-npm && \
+    npm install -g @angular/cli && \
+    apk del --purge --no-cache nodejs-npm && \
+    apk add --no-cache python3
+
+# Alpine has a not latest version of terraform. 
+# Therefore I made a manual installation of terraform. 
+# And moved it to the last layer.
+ENV TERRAFORM_VERSION 0.11.11
+
+RUN apk add --no-cache --virtual=temp curl unzip && \
+    curl -L https://releases.hashicorp.com/terraform/\
+${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
+         -o terraform.zip && \
+    unzip terraform.zip -d /usr/bin && \
+    chmod +x usr/bin/terraform && \
+    rm -f terraform.zip && \
+    apk del --purge --no-cache temp 
