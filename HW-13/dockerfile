@@ -46,3 +46,4 @@ ${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
     chmod +x usr/bin/terraform && \
     rm -f terraform.zip && \
     apk del --purge --no-cache temp 
+
