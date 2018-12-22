@@ -4,8 +4,7 @@ RUN apk add --no-cache maven
 
 ENV MSRESTAZURE_VERSION 0.4.11
 
-RUN apk update &&\
-    apk add --no-cache bash \
+RUN apk add --no-cache bash \
                        python2-dev \
                        py2-pip && \
     apk add --no-cache --virtual=build gcc \
@@ -21,8 +20,7 @@ RUN apk update &&\
     apk add --no-cache jq \
                        openssl
 
-RUN apk update &&\
-    apk add --no-cache nodejs \
+RUN apk add --no-cache nodejs \
                        nodejs-npm && \
     npm install -g @angular/cli && \
     apk del --purge --no-cache nodejs-npm && \
